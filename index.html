@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ashiq Ahamed · AI Engineer</title>
+<meta name="description" content="Ashiq Ahamed, AI engineer in Berlin building LLM and agentic applications where evaluation and safety come first.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#02040a; --panel:rgba(4,14,24,.72); --cyan:#00eaff; --cyan-dim:#0a6d7a; --orange:#ff7a1a;
+  --text:#d6f6ff; --muted:#7fa7b3; --line:rgba(0,234,255,.35);
+  --glow:0 0 6px rgba(0,234,255,.9),0 0 18px rgba(0,234,255,.45);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:"JetBrains Mono",ui-monospace,monospace;line-height:1.6;overflow-x:hidden}
+canvas#grid{position:fixed;inset:0;width:100%;height:100%;z-index:0}
+main{position:relative;z-index:1}
+a{color:var(--cyan);text-decoration:none}
+a:hover{text-shadow:var(--glow)}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+
+/* nav */
+nav{position:sticky;top:0;z-index:5;backdrop-filter:blur(8px);background:rgba(2,4,10,.6);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;height:56px}
+.logo{font-family:Orbitron;font-weight:900;letter-spacing:.2em;color:var(--cyan);text-shadow:var(--glow)}
+nav ul{display:flex;gap:22px;list-style:none;font-size:13px;text-transform:uppercase;letter-spacing:.15em}
+nav ul a{color:var(--muted)} nav ul a:hover{color:var(--cyan)}
+
+/* hero */
+.hero{min-height:calc(100vh - 56px);display:flex;flex-direction:column;justify-content:center;padding:60px 20px}
+.tag{color:var(--orange);font-size:13px;letter-spacing:.3em;text-transform:uppercase;margin-bottom:18px}
+h1{font-family:Orbitron;font-weight:900;font-size:clamp(40px,9vw,96px);line-height:1;letter-spacing:.06em;color:#eaffff;
+  text-shadow:0 0 4px #fff,0 0 14px var(--cyan),0 0 40px rgba(0,234,255,.6);position:relative}
+h1 .glitch{position:relative;display:inline-block}
+h1 .glitch::before,h1 .glitch::after{content:attr(data-text);position:absolute;left:0;top:0;opacity:0}
+h1 .glitch.on::before{opacity:.8;color:var(--orange);transform:translate(3px,-2px);clip-path:inset(10% 0 55% 0)}
+h1 .glitch.on::after{opacity:.8;color:var(--cyan);transform:translate(-3px,2px);clip-path:inset(60% 0 8% 0)}
+.typed{margin-top:22px;font-size:clamp(15px,2.2vw,20px);color:var(--text);min-height:3.2em;max-width:760px}
+.cursor{display:inline-block;width:.6em;background:var(--cyan);animation:blink 1s steps(1) infinite;box-shadow:var(--glow)}
+@keyframes blink{50%{opacity:0}}
+.cta{display:flex;gap:14px;flex-wrap:wrap;margin-top:34px}
+.btn{font-family:Orbitron;font-size:13px;letter-spacing:.18em;text-transform:uppercase;padding:12px 22px;border:1px solid var(--cyan);color:var(--cyan);
+  background:rgba(0,234,255,.06);position:relative;overflow:hidden;transition:.2s}
+.btn:hover{background:var(--cyan);color:#001015;box-shadow:var(--glow);text-shadow:none}
+.btn.alt{border-color:var(--orange);color:var(--orange);background:rgba(255,122,26,.06)}
+.btn.alt:hover{background:var(--orange);color:#140600;box-shadow:0 0 18px rgba(255,122,26,.6)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:56px}
+.stat{border:1px solid var(--line);background:var(--panel);padding:16px}
+.stat b{display:block;font-family:Orbitron;font-size:clamp(22px,4vw,34px);color:var(--cyan);text-shadow:var(--glow)}
+.stat span{font-size:12px;color:var(--muted)}
+
+/* sections */
+section{padding:90px 0}
+h2{font-family:Orbitron;font-size:clamp(22px,4vw,34px);letter-spacing:.14em;text-transform:uppercase;margin-bottom:8px;color:#eaffff}
+h2 small{color:var(--orange);font-size:.45em;letter-spacing:.3em;display:block;margin-bottom:6px}
+.sub{color:var(--muted);margin-bottom:36px;max-width:720px}
+
+/* projects */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:20px}
+.card{position:relative;background:var(--panel);border:1px solid var(--line);padding:22px;transition:transform .15s ease,border-color .2s, box-shadow .2s;transform-style:preserve-3d;cursor:default}
+.card:hover{border-color:var(--cyan);box-shadow:0 0 0 1px var(--cyan),0 0 30px rgba(0,234,255,.25)}
+.card::before{content:"";position:absolute;inset:-1px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);height:2px;top:-1px;transform:scaleX(0);transition:transform .4s}
+.card:hover::before{transform:scaleX(1)}
+.card .kicker{font-size:11px;letter-spacing:.25em;color:var(--orange);text-transform:uppercase}
+.card h3{font-family:Orbitron;font-size:18px;margin:8px 0 10px;color:#eaffff;letter-spacing:.04em}
+.card p{font-size:13.5px;color:var(--text);opacity:.88}
+.metric{margin:14px 0;padding:10px 12px;border-left:2px solid var(--cyan);background:rgba(0,234,255,.05);font-size:13px}
+.metric b{color:var(--cyan)}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}
+.tags span{font-size:11px;border:1px solid var(--cyan-dim);color:var(--muted);padding:2px 8px}
+.links{display:flex;gap:16px;font-size:13px;margin-top:6px}
+.live{display:inline-flex;align-items:center;gap:6px;color:#7dffb0}
+.live::before{content:"";width:7px;height:7px;border-radius:50%;background:#2dff8a;box-shadow:0 0 8px #2dff8a;animation:pulse 1.6s infinite}
+@keyframes pulse{50%{opacity:.3}}
+
+/* skills */
+.skills{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
+.skill{border:1px solid var(--line);background:var(--panel);padding:18px}
+.skill h4{font-family:Orbitron;font-size:13px;letter-spacing:.18em;color:var(--cyan);text-transform:uppercase;margin-bottom:10px}
+.skill p{font-size:13px;color:var(--text);opacity:.85}
+
+/* terminal */
+.term{border:1px solid var(--cyan);background:rgba(0,8,14,.9);box-shadow:0 0 40px rgba(0,234,255,.15)}
+.term .bar{display:flex;gap:8px;align-items:center;padding:8px 12px;border-bottom:1px solid var(--line);font-size:12px;color:var(--muted)}
+.term .bar i{width:10px;height:10px;border:1px solid var(--cyan);display:inline-block}
+.term .out{height:340px;overflow-y:auto;padding:14px 16px;font-size:13.5px;white-space:pre-wrap}
+.term .out .c{color:var(--orange)} .term .out .k{color:var(--cyan)}
+.term form{display:flex;border-top:1px solid var(--line)}
+.term label{padding:10px 0 10px 16px;color:var(--orange)}
+.term input{flex:1;background:transparent;border:0;outline:0;color:var(--text);font:inherit;font-size:14px;padding:10px}
+
+footer{border-top:1px solid var(--line);padding:30px 0 50px;color:var(--muted);font-size:13px}
+footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
+.reveal.in{opacity:1;transform:none}
+
+@media (max-width:720px){
+  nav ul{display:none}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .grid{grid-template-columns:1fr}
+  section{padding:64px 0}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  .reveal{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+<canvas id="grid" aria-hidden="true"></canvas>
+<main>
+<nav><div class="wrap">
+  <div class="logo">ASHIQ.AI</div>
+  <ul><li><a href="#projects">Projects</a></li><li><a href="#skills">Skills</a></li><li><a href="#terminal">Terminal</a></li><li><a href="#contact">Contact</a></li></ul>
+</div></nav>
+
+<header class="hero wrap">
+  <div class="tag">// AI Engineer · Berlin</div>
+  <h1><span class="glitch" data-text="ASHIQ">ASHIQ</span><br><span class="glitch" data-text="AHAMED">AHAMED</span></h1>
+  <p class="typed"><span id="typed"></span><span class="cursor">&nbsp;</span></p>
+  <div class="cta">
+    <a class="btn" href="#projects">View projects</a>
+    <a class="btn alt" href="#terminal">Open terminal</a>
+    <a class="btn" href="https://github.com/ashiqahamed178-dotcom" target="_blank" rel="noopener">GitHub</a>
+  </div>
+  <div class="stats">
+    <div class="stat"><b data-count="0.983" data-dec="3">0</b><span>F1 of my LoRA prompt-injection detector</span></div>
+    <div class="stat"><b data-count="0" data-suffix=" / 7">0</b><span>made-up answers on unanswerable questions (ServiceDesk Copilot)</span></div>
+    <div class="stat"><b data-count="95" data-suffix="%">0</b><span>right page in the top 4 retrieved, 41 labelled questions</span></div>
+    <div class="stat"><b data-count="126">0</b><span>API tests in AgentSpend, plus 26 smart-contract attack tests</span></div>
+  </div>
+</header>
+
+<section id="projects"><div class="wrap">
+  <h2 class="reveal"><small>01 / Programs</small>Projects</h2>
+  <p class="sub reveal">Every project is measured on labelled data, and the weak results are documented as openly as the strong ones.</p>
+  <div class="grid">
+
+    <article class="card reveal">
+      <div class="kicker">RAG · Agents · Production</div>
+      <h3>ServiceDesk Copilot</h3>
+      <p>Answers technicians' questions from real equipment manuals with citations checked in code, and drafts tickets and parts lists through an approval-gated LangGraph agent.</p>
+      <div class="metric"><b>83%</b> answer accuracy · <b>0 of 7</b> made-up answers · router cuts tokens <b>57%</b></div>
+      <div class="tags"><span>Python</span><span>FastAPI</span><span>LangGraph</span><span>pgvector</span><span>MCP</span><span>Gemini</span><span>n8n</span></div>
+      <div class="links"><span class="live">Live demo</span><a href="https://servicedesk-copilot.onrender.com" target="_blank" rel="noopener">Open ↗</a><a href="https://github.com/ashiqahamed178-dotcom/servicedesk-copilot" target="_blank" rel="noopener">Code ↗</a></div>
+    </article>
+
+    <article class="card reveal">
+      <div class="kicker">AI Security · Gateway</div>
+      <h3>Guardrail Gateway</h3>
+      <p>OpenAI-compatible proxy that checks user messages and tool outputs for prompt injection before they reach the LLM. Rules first, then a model; decisions logged as hashes.</p>
+      <div class="metric">Found that a TF-IDF filter caught <b>8 / 8</b> attacks but blocked <b>8 / 12</b> harmless requests</div>
+      <div class="tags"><span>FastAPI</span><span>scikit-learn</span><span>SQLite</span><span>Docker</span><span>CI eval gate</span></div>
+      <div class="links"><a href="https://github.com/ashiqahamed178-dotcom/Guardrail-Gateway" target="_blank" rel="noopener">Code ↗</a></div>
+    </article>
+
+    <article class="card reveal">
+      <div class="kicker">Fine-tuning · LoRA</div>
+      <h3>Prompt-Injection Detector</h3>
+      <p>Fine-tuned Qwen2.5-1.5B with LoRA, training 0.28% of its weights, and compared it with a TF-IDF baseline and zero-shot prompting on English and German attacks.</p>
+      <div class="metric">F1 <b>0.983</b> vs 0.849 TF-IDF vs 0.786 zero-shot · <b>58 / 60</b> attacks caught</div>
+      <div class="tags"><span>PyTorch</span><span>Transformers</span><span>PEFT</span><span>Colab T4</span></div>
+      <div class="links"><a href="https://github.com/ashiqahamed178-dotcom/Prompt-Injection-Lora" target="_blank" rel="noopener">Code ↗</a></div>
+    </article>
+
+    <article class="card reveal">
+      <div class="kicker">Agents · Web3</div>
+      <h3>AgentSpend</h3>
+      <p>AI-assisted escrow: RAG over agreements with code-checked citations, a LangGraph agent with read-only tools and mandatory human approval, and an MCP server with no tool that moves money.</p>
+      <div class="metric"><b>95%</b> answer accuracy · <b>0%</b> made-up answers · <b>4 / 4</b> injection attacks stopped</div>
+      <div class="tags"><span>TypeScript</span><span>LangGraph</span><span>Ollama</span><span>PostgreSQL</span><span>Solidity</span></div>
+      <div class="links"><a href="https://github.com/ashiqahamed178-dotcom/AGENT-SPEED" target="_blank" rel="noopener">Code ↗</a></div>
+    </article>
+
+    <article class="card reveal">
+      <div class="kicker">Explainable ML</div>
+      <h3>Heart Disease Risk</h3>
+      <p>Leakage-aware pipeline on 918 patients from 4 hospitals, with SHAP explanations. I reported a fairness gap openly: recall 0.62 for women vs 0.93 for men.</p>
+      <div class="metric">ROC-AUC <b>0.874</b> (95% CI 0.82–0.92) · recall <b>0.89</b></div>
+      <div class="tags"><span>scikit-learn</span><span>XGBoost</span><span>SHAP</span><span>Streamlit</span><span>FastAPI</span></div>
+      <div class="links"><a href="https://github.com/ashiqahamed178-dotcom/Heart-Disease-Prediction" target="_blank" rel="noopener">Code ↗</a></div>
+    </article>
+
+  </div>
+</div></section>
+
+<section id="skills"><div class="wrap">
+  <h2 class="reveal"><small>02 / System</small>Skills</h2>
+  <p class="sub reveal">The tools I have used in shipped, tested projects.</p>
+  <div class="skills">
+    <div class="skill reveal"><h4>LLM Apps &amp; RAG</h4><p>Embeddings, pgvector, hybrid search (RRF), citation checks, structured output, Gemini, Groq, Ollama, OpenAI-compatible APIs</p></div>
+    <div class="skill reveal"><h4>Agents</h4><p>LangGraph, tool-using agents, bounded loops, human-in-the-loop approval, MCP servers, n8n</p></div>
+    <div class="skill reveal"><h4>Evaluation</h4><p>Hand-labelled eval sets, retrieval recall, hallucination rate, LLM-as-judge vs labels (kappa), CI regression gates</p></div>
+    <div class="skill reveal"><h4>AI Security</h4><p>Prompt-injection tests and detectors, read-only tools, permission boundaries, signed webhooks, audit trails</p></div>
+    <div class="skill reveal"><h4>ML &amp; Fine-tuning</h4><p>LoRA (PEFT, Transformers, PyTorch), scikit-learn, XGBoost, SHAP, calibration, cross-validation</p></div>
+    <div class="skill reveal"><h4>Engineering</h4><p>Python, TypeScript, SQL, FastAPI, React, Docker, GitHub Actions, AWS, Jenkins, pytest, mypy</p></div>
+  </div>
+</div></section>
+
+<section id="terminal"><div class="wrap">
+  <h2 class="reveal"><small>03 / Interface</small>Terminal</h2>
+  <p class="sub reveal">Type <span style="color:var(--orange)">help</span> to see the commands.</p>
+  <div class="term reveal">
+    <div class="bar"><i></i><i></i><i></i>&nbsp; ashiq@grid: ~</div>
+    <div class="out" id="out" aria-live="polite"></div>
+    <form id="cmd" autocomplete="off"><label for="in">&gt;</label><input id="in" spellcheck="false" aria-label="Terminal command" placeholder="help"></form>
+  </div>
+</div></section>
+
+<section id="contact"><div class="wrap">
+  <h2 class="reveal"><small>04 / Uplink</small>Contact</h2>
+  <p class="sub reveal">Open to AI engineering roles in Berlin and remote across Europe.</p>
+  <div class="cta reveal">
+    <a class="btn" href="mailto:ashiqahamed178@gmail.com">Email</a>
+    <a class="btn alt" href="https://www.linkedin.com/in/ashiq-a-8117a620a" target="_blank" rel="noopener">LinkedIn</a>
+    <a class="btn" href="https://github.com/ashiqahamed178-dotcom" target="_blank" rel="noopener">GitHub</a>
+  </div>
+</div></section>
+
+<footer><div class="wrap"><span>© 2026 Ashiq Ahamed · Berlin</span><span>Built by hand: one HTML file, no frameworks.</span></div></footer>
+</main>
+
+<script>
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* ---------- neon perspective grid + light cycles ---------- */
+const cv = document.getElementById("grid"), ctx = cv.getContext("2d");
+let W, H, t = 0, mx = 0, my = 0;
+function size(){ W = cv.width = innerWidth * devicePixelRatio; H = cv.height = innerHeight * devicePixelRatio; }
+size(); addEventListener("resize", size);
+addEventListener("mousemove", e => { mx = e.clientX / innerWidth - .5; my = e.clientY / innerHeight - .5; });
+
+const cycles = [
+  {x:.2, y:.75, dx:1, dy:0, color:"0,234,255", trail:[]},
+  {x:.8, y:.85, dx:-1, dy:0, color:"255,122,26", trail:[]}
+];
+function stepCycle(c){
+  const sp = .0018;
+  c.x += c.dx * sp; c.y += c.dy * sp * 1.6;
+  if (Math.random() < .012 || c.x < .03 || c.x > .97 || c.y < .62 || c.y > .98){
+    if (c.dx){ c.dy = c.y > .8 ? -1 : 1; c.dx = 0; } else { c.dx = c.x > .5 ? -1 : 1; c.dy = 0; }
+    c.x = Math.min(.97, Math.max(.03, c.x)); c.y = Math.min(.98, Math.max(.62, c.y));
+  }
+  c.trail.push([c.x, c.y]); if (c.trail.length > 180) c.trail.shift();
+}
+function draw(){
+  ctx.clearRect(0, 0, W, H);
+  const hz = H * (.55 + my * .04), cx = W * (.5 + mx * .06);
+  // horizon glow
+  const g = ctx.createLinearGradient(0, hz - H*.25, 0, hz + 4);
+  g.addColorStop(0, "rgba(0,234,255,0)"); g.addColorStop(1, "rgba(0,234,255,.18)");
+  ctx.fillStyle = g; ctx.fillRect(0, hz - H*.25, W, H*.25);
+  ctx.lineWidth = devicePixelRatio;
+  // vertical lines converging to vanishing point
+  for (let i = -24; i <= 24; i++){
+    ctx.strokeStyle = `rgba(0,234,255,${.08 + .18*(1-Math.abs(i)/24)})`;
+    ctx.beginPath(); ctx.moveTo(cx + i * W * .012, hz); ctx.lineTo(cx + i * W * .16, H); ctx.stroke();
+  }
+  // horizontal lines moving toward viewer
+  const off = (t * .006) % 1;
+  for (let k = 0; k < 22; k++){
+    const z = (k + off) / 22, y = hz + (H - hz) * z * z;
+    ctx.strokeStyle = `rgba(0,234,255,${.05 + .35*z})`;
+    ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
+  }
+  ctx.strokeStyle = "rgba(0,234,255,.9)"; ctx.shadowColor = "#00eaff"; ctx.shadowBlur = 12;
+  ctx.beginPath(); ctx.moveTo(0, hz); ctx.lineTo(W, hz); ctx.stroke(); ctx.shadowBlur = 0;
+  // light cycles
+  for (const c of cycles){
+    if (!reduce) stepCycle(c);
+    ctx.lineWidth = 2.5 * devicePixelRatio; ctx.shadowBlur = 14; ctx.shadowColor = `rgb(${c.color})`;
+    ctx.beginPath();
+    c.trail.forEach(([x, y], i) => { ctx.strokeStyle = `rgba(${c.color},.9)`; i ? ctx.lineTo(x*W, y*H) : ctx.moveTo(x*W, y*H); });
+    ctx.stroke(); ctx.shadowBlur = 0;
+    ctx.fillStyle = "#fff"; ctx.fillRect(c.x*W - 3, c.y*H - 3, 6, 6);
+  }
+  ctx.lineWidth = devicePixelRatio;
+  t++; if (!reduce) requestAnimationFrame(draw);
+}
+draw();
+
+/* ---------- typed headline ---------- */
+const line = "AI engineer building LLM and agentic applications where evaluation and safety come first.";
+const typed = document.getElementById("typed");
+if (reduce) typed.textContent = line;
+else { let i = 0; (function type(){ typed.textContent = line.slice(0, ++i); if (i < line.length) setTimeout(type, 28 + Math.random()*40); })(); }
+
+/* ---------- glitch ---------- */
+if (!reduce) setInterval(() => {
+  document.querySelectorAll(".glitch").forEach(el => { el.classList.add("on"); setTimeout(() => el.classList.remove("on"), 120); });
+}, 3800);
+
+/* ---------- count-up stats + reveal on scroll ---------- */
+const io = new IntersectionObserver(es => es.forEach(e => {
+  if (!e.isIntersecting) return;
+  e.target.classList.add("in");
+  io.unobserve(e.target);
+}), {threshold: .15});
+document.querySelectorAll(".reveal").forEach(el => io.observe(el));
+document.querySelectorAll("b[data-count]").forEach(b => {
+  const end = +b.dataset.count, dec = +(b.dataset.dec || 0), suf = b.dataset.suffix || "";
+  if (reduce || end === 0){ b.textContent = end.toFixed(dec) + suf; return; }
+  let s = null;
+  const tick = ts => { s ??= ts; const p = Math.min(1, (ts - s) / 1400), v = end * (1 - Math.pow(1 - p, 3));
+    b.textContent = v.toFixed(dec) + suf; if (p < 1) requestAnimationFrame(tick); };
+  setTimeout(() => requestAnimationFrame(tick), 600);
+});
+
+/* ---------- 3D tilt on cards ---------- */
+if (!reduce && matchMedia("(hover:hover)").matches) document.querySelectorAll(".card").forEach(c => {
+  c.addEventListener("mousemove", e => { const r = c.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
+    c.style.transform = `perspective(700px) rotateY(${x*8}deg) rotateX(${-y*8}deg)`; });
+  c.addEventListener("mouseleave", () => c.style.transform = "");
+});
+
+/* ---------- terminal ---------- */
+const out = document.getElementById("out"), input = document.getElementById("in");
+const LINKS = {
+  servicedesk: "https://github.com/ashiqahamed178-dotcom/servicedesk-copilot",
+  demo: "https://servicedesk-copilot.onrender.com",
+  gateway: "https://github.com/ashiqahamed178-dotcom/Guardrail-Gateway",
+  lora: "https://github.com/ashiqahamed178-dotcom/Prompt-Injection-Lora",
+  agentspend: "https://github.com/ashiqahamed178-dotcom/AGENT-SPEED",
+  heart: "https://github.com/ashiqahamed178-dotcom/Heart-Disease-Prediction",
+  linkedin: "https://www.linkedin.com/in/ashiq-a-8117a620a",
+  github: "https://github.com/ashiqahamed178-dotcom"
+};
+const CMDS = {
+  help: () => `<span class="k">whoami</span>      who I am
+<span class="k">projects</span>    what I have built
+<span class="k">skills</span>      the stack
+<span class="k">eval</span>        how I measure things
+<span class="k">contact</span>     how to reach me
+<span class="k">open</span> &lt;name&gt; open a link: ${Object.keys(LINKS).join(", ")}
+<span class="k">clear</span>       clear the screen`,
+  whoami: () => `Ashiq Ahamed, AI engineer in Berlin.
+I build LLM and agent systems and the evaluations that prove they work.
+Before engineering: 4+ years in B2B sales and operations, running an outlet with about EUR 100,000 in monthly sales.
+English C1 · German A2 (learning).`,
+  projects: () => `[1] ServiceDesk Copilot   RAG + approval-gated agent, live demo   → open servicedesk
+[2] Guardrail Gateway      prompt-injection proxy for any LLM API    → open gateway
+[3] Prompt-Injection LoRA  fine-tuned Qwen2.5-1.5B, F1 0.983         → open lora
+[4] AgentSpend             AI-assisted escrow, MCP, human approval    → open agentspend
+[5] Heart Disease Risk     explainable ML, ROC-AUC 0.874             → open heart`,
+  skills: () => `llm      RAG, embeddings, pgvector, structured output, Gemini, Ollama
+agents   LangGraph, MCP, human-in-the-loop, guardrails
+eval     labelled sets, recall, hallucination rate, LLM-as-judge vs labels
+ml       LoRA/PEFT, PyTorch, scikit-learn, XGBoost, SHAP
+eng      Python, TypeScript, SQL, FastAPI, Docker, GitHub Actions, AWS`,
+  eval: () => `1. Write down what "good" means before building.
+2. Label the test data myself.
+3. Compare against a simple baseline.
+4. Keep the change only if the numbers improve, and publish the weak results too.
+Example: an LLM judge cut correct answers to 65%, so I replaced it with a code rule: 95%.`,
+  contact: () => `email     <a href="mailto:ashiqahamed178@gmail.com">ashiqahamed178@gmail.com</a>
+linkedin  <a href="${LINKS.linkedin}" target="_blank" rel="noopener">${LINKS.linkedin}</a>
+github    <a href="${LINKS.github}" target="_blank" rel="noopener">${LINKS.github}</a>`,
+  sudo: () => `Permission denied. Nice try: every action needs human approval here.`,
+  clear: () => { out.innerHTML = ""; return null; }
+};
+function print(html){ const d = document.createElement("div"); d.innerHTML = html; out.appendChild(d); out.scrollTop = out.scrollHeight; }
+function run(raw){
+  const [cmd, arg] = raw.trim().toLowerCase().split(/\s+/);
+  print(`<span class="c">&gt;</span> ${raw.replace(/[<>&]/g, s => ({"<":"&lt;",">":"&gt;","&":"&amp;"}[s]))}`);
+  if (!cmd) return;
+  if (cmd === "open"){
+    if (LINKS[arg]){ window.open(LINKS[arg], "_blank", "noopener"); print(`opening ${arg}…`); }
+    else print(`usage: open &lt;${Object.keys(LINKS).join("|")}&gt;`);
+    return;
+  }
+  const f = CMDS[cmd]; const r = f ? f() : `command not found: ${cmd}. Type <span class="k">help</span>.`;
+  if (r !== null) print(r);
+}
+document.getElementById("cmd").addEventListener("submit", e => { e.preventDefault(); run(input.value); input.value = ""; });
+print(`<span class="k">GRID OS v2.6</span> · connection established
+Type <span class="k">help</span> to begin.`);
+</script>
+</body>
+</html>
